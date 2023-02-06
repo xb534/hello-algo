@@ -439,6 +439,118 @@ comments: true
 === "C++"
 
     ```cpp title="linkedlist_deque.cpp"
+        /* 双向链表结点 */
+    struct DListNode
+    {
+        DListNode* next;
+        DListNode* prev;
+        int val;
+        DListNode(int x) : val(x), next(nullptr), prev(nullptr) {}
+    };
+
+
+    class LinkedListDeque
+    {
+    private:
+        DListNode* front;
+        DListNode* rear;
+        int dequeSize;
+
+    public:
+        LinkedListDeque()
+        {
+            front = nullptr;
+            rear = nullptr;
+            dequeSize = 0;
+        };
+
+        ~LinkedListDeque()
+        {
+            delete front;
+            delete rear;
+        };
+
+        // 将元素添加至队首
+        void pushFirst(int num)
+        {
+            DListNode* tmp = new DListNode(num);  // 创建一个新节点
+            tmp->val = num;
+            if(isEmpty())
+            {
+                front = rear = tmp;
+            }else{
+                tmp->next = front;
+                front = tmp;
+            }
+            dequeSize ++;
+        }
+
+        // 将元素添加至队尾
+        void pushLast(int num)
+        {
+            DListNode* tmp = new DListNode(num);  // 创建一个新节点
+            tmp->val = num;
+            if(isEmpty())
+            {
+                front = rear = tmp;
+            }else{
+                tmp->prev = rear;
+                rear = tmp;
+            }
+            dequeSize ++;
+        }
+
+        // 删除队首元素
+        int pollFirst()
+        {
+            int num = peekFirst();
+            DListNode* tmp = front;
+            front = front->next;
+            delete tmp;
+            dequeSize --;
+            return num;
+        }
+
+        // 删除队尾元素
+        int pollLast()
+        {
+            int num = peekLast();
+            DListNode* tmp = rear;
+            rear = rear->prev;
+            delete tmp;
+            dequeSize --;
+            return num;
+        }
+
+        // 访问队首元素
+        int peekFirst()
+        {
+            if(isEmpty())
+                throw out_of_range("队列为空");
+            return front->val;
+        }
+
+        // 访问队尾元素
+        int peekLast()
+        {
+            if(isEmpty())
+                throw out_of_range("队列为空");
+            return rear->val;
+        }
+
+        // 获取队列的长度
+        int size()
+        {
+            return dequeSize;
+        }
+
+        // 判断队列是否为空
+        int isEmpty()
+        {
+            return size() == 0;
+        }
+
+    };
 
     ```
 
